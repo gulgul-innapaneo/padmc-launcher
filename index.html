@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PADMC Client — Next-Gen Minecraft Launcher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #090a0f;
+      --card-bg: rgba(18, 20, 29, 0.7);
+      --border: rgba(255, 255, 255, 0.08);
+      --primary: #00e676;
+      --primary-glow: rgba(0, 230, 118, 0.35);
+      --text-main: #ffffff;
+      --text-sub: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* BACKGROUND LIGHT ORBS */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb-1 {
+      width: 400px;
+      height: 400px;
+      background: rgba(0, 230, 118, 0.12);
+      top: 15%;
+      left: 20%;
+    }
+
+    .orb-2 {
+      width: 500px;
+      height: 500px;
+      background: rgba(59, 130, 246, 0.08);
+      bottom: 10%;
+      right: 15%;
+    }
+
+    /* GRID OVERLAY PATTERN */
+    .grid-pattern {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* CONTAINER CARD */
+    .card {
+      position: relative;
+      z-index: 1;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 48px;
+      max-width: 520px;
+      width: 90%;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 230, 118, 0.1);
+      border: 1px solid rgba(0, 230, 118, 0.25);
+      color: var(--primary);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--primary);
+    }
+
+    h1 {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    h1 span {
+      background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: var(--text-sub);
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    /* FEATURE GRID */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+
+    .feature-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      padding: 14px 16px;
+      border-radius: 14px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .feature-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: rgba(0, 230, 118, 0.15);
+      color: var(--primary);
+      border-radius: 8px;
+      font-size: 12px;
+    }
+
+    /* DOWNLOAD BUTTON */
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      background: linear-gradient(135deg, #00e676 0%, #00c853 100%);
+      color: #000000;
+      font-size: 16px;
+      font-weight: 800;
+      padding: 18px;
+      border-radius: 14px;
+      text-decoration: none;
+      box-shadow: 0 10px 30px var(--primary-glow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-download:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(0, 230, 118, 0.5);
+    }
+
+    .btn-download:active {
+      transform: translateY(0);
+    }
+
+    .file-meta {
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      margin-top: 32px;
+      font-size: 12px;
+      color: #475569;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grid-pattern"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="card">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Version 1.0.0 Ready
+    </div>
+
+    <h1>PADMC <span>CLIENT</span></h1>
+    <p class="subtitle">An optimized, high-performance Minecraft launcher featuring built-in version profiles, skin support, and mod loader execution.</p>
+
+    <div class="features-grid">
+      <div class="feature-box">
+        <div class="feature-icon">✓</div>
+        <span>Microsoft & Offline</span>
+      </div>
+      <div class="feature-box">
+        <div class="feature-icon">✓</div>
+        <span>Forge & Fabric</span>
+      </div>
+      <div class="feature-box">
+        <div class="feature-icon">✓</div>
+        <span>RAM Allocator</span>
+      </div>
+      <div class="feature-box">
+        <div class="feature-icon">✓</div>
+        <span>Custom Skins</span>
+      </div>
+    </div>
+
+    <!-- UPDATE THIS HREF WITH YOUR MEDIAFIRE OR GOOGLE DRIVE DOWNLOAD LINK -->
+    <a href="https://drive.google.com/file/d/1X4199c_kZetNzqU-zWDTrULPN3wvC9_K/view" class="btn-download" target="_blank">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      DOWNLOAD FOR WINDOWS
+    </a>
+
+    <div class="file-meta">Installer (.exe) • Windows 10/11 Compatible</div>
+  </div>
+
+  <footer>&copy; PADMC Client. Not affiliated with Mojang Studios.</footer>
+
+</body>
+</html>
